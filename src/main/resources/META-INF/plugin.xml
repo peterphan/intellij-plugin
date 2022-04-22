@@ -5,14 +5,23 @@
     <vendor>peterphan</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.peterphan.intellijplugin.services.MyApplicationService"/>
         <projectService serviceImplementation="com.github.peterphan.intellijplugin.services.MyProjectService"/>
+        <runLineMarkerContributor language="JAVA"
+                                  implementationClass="com.github.peterphan.runcontributer.RunContributer"/>
     </extensions>
 
     <applicationListeners>
         <listener class="com.github.peterphan.intellijplugin.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+
+    <actions>
+        <action id="PPHAN.Test.Action" class="com.github.peterphan.actions.TestAction" />
+        <action id="PPHAN.AnotherTest.Action" class="com.github.peterphan.actions.AnotherTestAction" />
+    </actions>
+
 </idea-plugin>
