@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.6.10"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.5.2"
+    id("org.jetbrains.intellij") version "1.7.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
@@ -18,6 +18,10 @@ plugins {
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
+
+dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.xml"))))
+}
 
 // Configure project's dependencies
 repositories {
@@ -58,6 +62,28 @@ tasks {
         withType<KotlinCompile> {
             kotlinOptions.jvmTarget = it
         }
+    }
+
+    test {
+        // Start https://github.com/gradle/gradle/issues/18486
+        // Since 2021.3, package structures changed by JetBrains and Gradle cannot find tests. Workaround to include all Tests
+        // Do not scan for tests and include all classes with Test in name
+        isScanForTestClasses = false
+        include("**/*Test*")
+
+        jvmArgs("--illegal-access=deny",
+                "--add-opens=java.base/java.io=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+                "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt.event=ALL-UNNAMED",
+                "--add-opens=java.desktop/java.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+                "--add-opens=java.desktop/javax.swing=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.font=ALL-UNNAMED",
+                "--add-opens=java.desktop/sun.swing=ALL-UNNAMED")
     }
 
     wrapper {
