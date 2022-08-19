@@ -20,8 +20,11 @@
     </applicationListeners>
 
     <actions>
-        <action id="PPHAN.Test.Action" class="com.github.peterphan.actions.TestAction" />
-        <action id="PPHAN.AnotherTest.Action" class="com.github.peterphan.actions.AnotherTestAction" />
+        <group id="Peter.Actions.All" class="com.github.peterphan.actions.MyActionGroup">
+            <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
+            <action id="PPHAN.Test.Action" class="com.github.peterphan.actions.TestAction" />
+            <action id="PPHAN.AnotherTest.Action" class="com.github.peterphan.actions.AnotherTestAction" />
+        </group>
     </actions>
 
 </idea-plugin>
